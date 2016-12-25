@@ -1,7 +1,7 @@
-import { DirectionType, PixelObject } from '../interfaces/PixelObject';
+import { DirectionType, PixelObject, OffsetObject } from '../interfaces/PixelObject';
 
 export const styleUtil = {
-    formPixel() {
+    formPixel() : void {
         function determineDirection(type) {
             switch (type.toLowerCase()) {
                 case 'right':
@@ -42,8 +42,8 @@ export const styleUtil = {
             return [verticalChecks, horizontalChecks];
         };
         let verticalChecks, horizontalChecks = null;
-        let horizontalOffset = { offsetValue: 0 };
-        let verticalOffset = { offsetValue: 0 };
+        let horizontalOffset : OffsetObject = { offsetValue: 0 };
+        let verticalOffset : OffsetObject = { offsetValue: 0 };
         [verticalChecks, horizontalChecks] = extractDirectionalProps.call(this);
         (function addValues(horizontalValues, verticalValues) {
             function addByType(type, collection) {

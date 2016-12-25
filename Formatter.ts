@@ -1,13 +1,11 @@
 import { styleUtil } from './Wrappers/FormatterWrapper';
+import { OffsetObject } from './interfaces/PixelObject';
 
-const Formatter = {
-    add(...values) {
-        let horizontalChange: any = 0;
-        let verticalChange: any = 0;
+export const Formatter = {
+    addPixels(masterStyle: any, ...values: string[]) {
+        let horizontalChange: OffsetObject = null;
+        let verticalChange: OffsetObject = null;
         [horizontalChange, verticalChange] = styleUtil.addPixels(values);
-        console.log(`Horizontal : ${horizontalChange.offsetValue}`);
-        console.log(`Vertical: ${verticalChange.offsetValue}`);
+        return [horizontalChange, verticalChange];
     }
 }
-
-Formatter.add('left: 10px', 'right: 20px');
