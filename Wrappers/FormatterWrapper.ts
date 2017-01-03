@@ -1,8 +1,8 @@
-import { DirectionType, PixelObject, OffsetObject } from '../interfaces/PixelObject';
+import { DirectionType, PixelObject, OffsetObject, weightedMappings } from '../interfaces/PixelObject';
 
 export const styleUtil = {
-    formPixel() : void {
-        function determineDirection(type) {
+    formPixel(): void {
+        function determineDirection(type: string): [DirectionType, boolean] {
             switch (type.toLowerCase()) {
                 case 'right':
                     return [DirectionType.Right, false];
@@ -12,23 +12,25 @@ export const styleUtil = {
                     return [DirectionType.Top, true];
                 case 'bottom':
                     return [DirectionType.Bottom, true];
+                default:
+                    return [-1, true];
             }
         }
         this.formattedParams = this.params.map(param => {
-            const splittedValues = param.split(':');
-            let direction = null;
-            let isVertical = null;
+            const splittedValues: string[] = param.split(':');
+            let direction: DirectionType = null;
+            let isVertical: boolean = null;
             [direction, isVertical] = determineDirection(splittedValues[0]);
-            const formattedValue : PixelObject = { type: direction, isVertical: isVertical, value: splittedValues[1] };
+            const formattedValue: PixelObject = { type: direction, isVertical: isVertical, value: splittedValues[1] };
             return formattedValue;
         });
     },
-    addPixels(values) {
+    addPixels(values): [OffsetObject, OffsetObject] {
         this.params = values;
         styleUtil.formPixel();
-        function extractDirectionalProps() {
-            let verticalChecks = [];
-            let horizontalChecks = [];
+        function extractDirectionalProps(): [boolean[], boolean[]] {
+            let verticalChecks: boolean[] = [];
+            let horizontalChecks: boolean[] = [];
             verticalChecks = this.formattedParams.filter(param => {
                 if (param.isVertical) {
                     return true;
@@ -42,12 +44,12 @@ export const styleUtil = {
             return [verticalChecks, horizontalChecks];
         };
         let verticalChecks, horizontalChecks = null;
-        let horizontalOffset : OffsetObject = { offsetValue: 0 };
-        let verticalOffset : OffsetObject = { offsetValue: 0 };
+        let horizontalOffset: OffsetObject = { offsetValue: 0 };
+        let verticalOffset: OffsetObject = { offsetValue: 0 };
         [verticalChecks, horizontalChecks] = extractDirectionalProps.call(this);
-        (function addValues(horizontalValues, verticalValues) {
-            function addByType(type, collection) {
-                let accumulator = 0;
+        (function addValues(horizontalValues, verticalValues) : void {
+            function addByType(type : OffsetObject, collection) : void {
+                let accumulator : number = 0;
                 collection.forEach(entry => {
                     accumulator += (weightedMappings[entry.type] * parseInt(entry.value.split('px')[0]));
                 })
@@ -60,18 +62,5 @@ export const styleUtil = {
     },
 }
 
-const directionTypeMappings = {
-    0: 'top',
-    1: 'left',
-    2: 'bottom',
-    3: 'right'
-};
-
-const weightedMappings = {
-    0: 1,
-    1: 1,
-    2: -1,
-    3: -1
-};
 
 
