@@ -18,10 +18,13 @@ export const styleUtil = {
         }
         this.formattedParams = this.params.map(param => {
             const splittedValues: string[] = param.split(':');
+            const trimmedValues = splittedValues.map(value => {
+                return value.trim();
+            });
             let direction: DirectionType = null;
             let isVertical: boolean = null;
-            [direction, isVertical] = determineDirection(splittedValues[0]);
-            const formattedValue: PixelObject = { type: direction, isVertical: isVertical, value: splittedValues[1] };
+            [direction, isVertical] = determineDirection(trimmedValues[0]);
+            const formattedValue: PixelObject = { type: direction, isVertical: isVertical, value: trimmedValues[1] };
             return formattedValue;
         });
     },
@@ -47,9 +50,9 @@ export const styleUtil = {
         let horizontalOffset: OffsetObject = { offsetValue: 0 };
         let verticalOffset: OffsetObject = { offsetValue: 0 };
         [verticalChecks, horizontalChecks] = extractDirectionalProps.call(this);
-        (function addValues(horizontalValues, verticalValues) : void {
-            function addByType(type : OffsetObject, collection) : void {
-                let accumulator : number = 0;
+        (function addValues(horizontalValues, verticalValues): void {
+            function addByType(type: OffsetObject, collection): void {
+                let accumulator: number = 0;
                 collection.forEach(entry => {
                     accumulator += (weightedMappings[entry.type] * parseInt(entry.value.split('px')[0]));
                 })

@@ -3,17 +3,32 @@ import { OffsetObject, weightedMappings, Directions } from './interfaces/PixelOb
 
 export const Formatter = {
     add(styleObject: any, ...values: string[]): string[] {
+        function extractExistingStyles() {
+            const values = [];
+            Object.keys(this.styleObject).forEach(value => {
+                values.push(`${value}: ${this.styleObject[value]}`);
+            });
+            return values;
+        }
         let hasStyleObject = true;
         if (typeof styleObject === 'string') {
             values.push(styleObject);
             hasStyleObject = false;
+        }
+        else {
+            this.styleObject = styleObject;
+            const additionalValues = extractExistingStyles.call(this);
+            if (additionalValues.length > 0) {
+                values = values.concat(additionalValues);
+            }
+
         }
         let horizontalChange: OffsetObject = null;
         let verticalChange: OffsetObject = null;
         let horizontalStyleFinal: string = null;
         let verticalStyleFinal: string = null;
         [horizontalChange, verticalChange] = styleUtil.addPixels(values);
-        function reformStyleObject(type: Directions, value: number) {
+        function reformStyleObject(type: Directions, value: number) : void {
             if (value !== 0) {
                 switch (type) {
                     case (Directions.horizontal):
@@ -67,4 +82,5 @@ export const Formatter = {
         return finalStyles;
     }
 }
+
 
