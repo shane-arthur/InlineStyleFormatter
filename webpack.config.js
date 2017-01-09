@@ -1,7 +1,7 @@
 
 
 module.exports = {
-    entry: './Formatter.ts',
+    entry: './src/Formatter.ts',
     output: {
         filename: './dist/bundle.js'
     },

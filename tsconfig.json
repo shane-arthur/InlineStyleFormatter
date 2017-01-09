@@ -4,6 +4,11 @@
         "target": "es5",
         "noImplicitAny": false,
         "sourceMap": false,
-        "types": [ "node", "mocha", "chai" ]
-    }
+        "types": [ "node"]
+    },
+     "exclude": [
+    "node_modules",
+    "build",
+    "src/**/*.spec.ts"
+  ]
 }
