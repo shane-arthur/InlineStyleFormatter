@@ -29,6 +29,7 @@
  	},
  	 "testRegex": "src/.*\\.spec.(ts|js)$",
  	"testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
+   "collectCoverageFrom": ["src/**/*.{ts}", "!**/node_modules/**", "!**/vendor/**", "!src/**/*.{spec.ts}"],
  	"globals": {
  		"__TS_CONFIG__": {
  			"target": "es6",
