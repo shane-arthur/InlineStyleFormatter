@@ -1,5 +1,6 @@
 import { DirectionType, PixelObject, OffsetObject, weightedMappings } from '../interfaces/PixelObject';
 
+
 export const styleUtil = {
     formPixel(): void {
         function determineDirection(type: string): [DirectionType, boolean] {
@@ -29,18 +30,23 @@ export const styleUtil = {
         });
     },
     addPixels(values): [OffsetObject, OffsetObject] {
-        console.log('FUCK FUCK FUCK!');
         this.params = values;
         styleUtil.formPixel();
         function extractDirectionalProps(): [boolean[], boolean[]] {
             let verticalChecks: boolean[] = [];
             let horizontalChecks: boolean[] = [];
             verticalChecks = this.formattedParams.filter(param => {
+                if (param.type === -1) {
+                    return false;
+                }
                 if (param.isVertical) {
                     return true;
                 }
             });
             horizontalChecks = this.formattedParams.filter(param => {
+                if (param.type === -1) {
+                    return false;
+                }
                 if (!param.isVertical) {
                     return true;
                 }
@@ -63,9 +69,6 @@ export const styleUtil = {
             addByType(horizontalOffset, horizontalValues);
         })(horizontalChecks, verticalChecks);
         return [horizontalOffset, verticalOffset];
-    },
-    smoke() {
-        console.log('goofie!');
     }
 }
 

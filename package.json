@@ -16,26 +16,25 @@
     "ts-jest": "^18.0.1",
     "ts-loader": "^1.3.3",
     "typescript": "^2.1.4",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "webpack-babel-jest": "^1.0.4"
   },
   "dependencies": {},
   "jest": {
- 	"moduleFileExtensions": [
- 		"ts",
- 		"js"
- 	],
- 	"transform": {
- 		"\\.(ts)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
- 	},
- 	 "testRegex": "src/.*\\.spec.(ts|js)$",
- 	"testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
-   "collectCoverageFrom": ["src/**/*.{ts}", "!**/node_modules/**", "!**/vendor/**", "!src/**/*.{spec.ts}"],
- 	"globals": {
- 		"__TS_CONFIG__": {
- 			"target": "es6",
- 			"module": "commonjs",
- 			"moduleResolution": "node"
- 		}
- 	}
- }
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "src/Wrappers/.*\\.spec.(ts|js)$",
+    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
+    "collectCoverageFrom": [
+      "src/**/*.{ts}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!src/**/*.{spec.ts}"
+    ]
+  }
 }
