@@ -28,7 +28,7 @@
     "transform": {
        ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testRegex": "src/Wrappers/.*\\.spec.(ts|js)$",
+    "testRegex": "src/*\\(Wrappers|Utils)/.*\\.spec.(ts|js)$",
     "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
     "collectCoverageFrom": [
       "src/**/*.{ts}",
