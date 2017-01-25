@@ -1,4 +1,4 @@
-import { styleUtil } from '../Wrappers/FormatterWrapper';
+import { styleUtil } from './FormatterWrapper';
 import { OffsetObject } from '../interfaces/PixelObject';
 
 

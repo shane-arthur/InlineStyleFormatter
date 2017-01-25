@@ -20,18 +20,21 @@
     "webpack-babel-jest": "^1.0.4"
   },
   "dependencies": {},
-  "jest": {
+   "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
     "moduleFileExtensions": [
       "ts",
-      "js"
+      "tsx",
+      "js",
+      "jsx"
     ],
-    "transform": {
-       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "src/*\\(Wrappers|Utils)/.*\\.spec.(ts|js)$",
-    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
+    "testRegex": "<rootDir>(src/).*\\.(test|spec)\\.(ts|js)$",
+    "coverageDirectory": "coverage",
     "collectCoverageFrom": [
-      "src/**/*.{ts}",
+       "src/**/*.{ts}",
       "!**/node_modules/**",
       "!**/vendor/**",
       "!src/**/*.{spec.ts}"
