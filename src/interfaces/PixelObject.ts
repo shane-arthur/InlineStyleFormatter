@@ -1,11 +1,11 @@
 export interface PixelObject {
-    type: DirectionType,
-    value: string,
-    isVertical: boolean
+    type: DirectionType;
+    value: string;
+    isVertical: boolean;
 };
 
-export interface OffsetObject { 
-    offsetValue : number
+export interface OffsetObject {
+    offsetValue: number;
 };
 
 export enum DirectionType {

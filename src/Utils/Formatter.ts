@@ -40,7 +40,7 @@ export const Formatter = {
                             else {
                                 value = value * -1;
                                 horizontalStyle = ['right', `${value}px`];
-                            }   
+                            }
                             if (hasStyleObject) {
                                 delete styleObject.right;
                                 delete styleObject.left;
@@ -81,6 +81,6 @@ export const Formatter = {
         }
         return finalStyles;
     }
-}
+};
 
 

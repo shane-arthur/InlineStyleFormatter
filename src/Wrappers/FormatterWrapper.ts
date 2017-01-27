@@ -62,7 +62,7 @@ export const styleUtil = {
                 let accumulator: number = 0;
                 collection.forEach(entry => {
                     accumulator += (weightedMappings[entry.type] * parseInt(entry.value.split('px')[0]));
-                })
+                });
                 type.offsetValue = accumulator;
             }
             addByType(verticalOffset, verticalValues);
@@ -70,7 +70,7 @@ export const styleUtil = {
         })(horizontalChecks, verticalChecks);
         return [horizontalOffset, verticalOffset];
     }
-}
+};
 
 
 

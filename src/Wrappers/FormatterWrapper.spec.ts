@@ -11,11 +11,11 @@ describe('FormatterWrapper', () => {
         valuesToTest = null;
         horizontalChange = null;
         verticalChange = null;
-    })
+    });
 
     const performAddition = () => {
         [horizontalChange, verticalChange] = styleUtil.addPixels(valuesToTest);
-    }
+    };
 
     it('should correctly add two values', () => {
         valuesToTest = ['left: 10px', 'left: 120px'];
@@ -25,7 +25,7 @@ describe('FormatterWrapper', () => {
     });
 
     it('should disregard direction values not l/r/t/b', () => {
-        valuesToTest= ['leftBull: 10px', 'left: 120px'];
+        valuesToTest = ['leftBull: 10px', 'left: 120px'];
         performAddition();
         expect(horizontalChange.offsetValue).toBe(120);
         expect(verticalChange.offsetValue).toBe(0);
