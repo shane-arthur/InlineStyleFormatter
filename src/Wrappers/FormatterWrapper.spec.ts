@@ -37,4 +37,10 @@ describe('FormatterWrapper', () => {
         expect(horizontalChange.offsetValue).toBe(-100);
         expect(verticalChange.offsetValue).toBe(50);
     });
+    it('should do some thing', () => {
+        const values: string[] = styleUtil.multiplyPixels(['left: 10px', ' right : 120 px'], (1 / 2));
+       expect(values.length).toBe(2);
+       expect(values[0]).toBe('left: 5px');
+       expect(values[1]).toBe('right: 60px');
+    });
 });

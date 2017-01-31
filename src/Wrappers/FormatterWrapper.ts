@@ -69,6 +69,15 @@ export const styleUtil = {
             addByType(horizontalOffset, horizontalValues);
         })(horizontalChecks, verticalChecks);
         return [horizontalOffset, verticalOffset];
+    },
+    multiplyPixels(pixelValues: string[], multiplier): string[] {
+        let returnValues: string[] = [];
+        const extractPixelValue = (pixel) => {
+            return pixel.split(':')[1].trim().split('px')[0].trim();
+        };
+        return pixelValues.map(value => {
+            return `${value.split(':')[0].trim()}: ${extractPixelValue(value) * multiplier}px`;
+        });
     }
 };
 
