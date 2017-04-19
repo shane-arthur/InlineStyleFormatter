@@ -1,9 +1,7 @@
 import { DirectionMappings } from '../Constants/DirectionMappings';
 
-export default class PixelFormatter {
-
-
-    extractWeightedMappings(value) {
+export const PixelFormatter = {
+    extractWeightedMappings: (value) => {
         const directionalValues = value.trim().split(':');
         const direction = directionalValues[0];
         const pixelValue = directionalValues[1].split('px')[0];
@@ -13,11 +11,39 @@ export default class PixelFormatter {
             weight: DirectionMappings[direction].weight,
             pixelValue: pixelValue
         });
-    }
+    },
 
-    getWeightsAndDirection(values) {
+    getWeightsAndDirection: (values) => {
         return values.map(value => {
-            return this.extractWeightedMappings(value);
+            return this.PixelFormatter.extractWeightedMappings(value);
         });
+    },
+
+    getValuesInAdditionForm: (values) => {
+        const getValues = (isVertical) => {
+            return values.filter(value => value.isVertical === isVertical);
+        };
+
+        const verticalArray = getValues(true);
+        const horizontalArray = getValues(false);
+
+        return {verticalValues: verticalArray, horizontalValues: horizontalArray};
+    },
+
+    performPixelAddition: (values) => {
+        const { verticalValues, horizontalValues } = values;
+        const performAddition = (values) => {
+            values.reduce(value => {
+                return (value.weight * value.pixelValue);
+            })
+        }
+
+
+        const verticalPixels = performAddition(verticalValues);
+        const horizontalPixels = performAddition(horizontalValues);
+
+        console.log('Lil Bitch!');
+        console.log(verticalPixels, horizontalPixels);
+        
     }
-}
+};

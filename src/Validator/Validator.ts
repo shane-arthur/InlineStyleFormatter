@@ -1,44 +1,52 @@
 import { DirectionMappings } from '../Constants/DirectionMappings';
 
-export default class Validator {
 
-    removeWhiteSpace(value) {
+export const Validator = {
+
+    removeWhiteSpace: (value) => {
         return value.replace(/\s/g, '');
-    }
+    },
 
-    validateAgainstDirectionalTypes(value) {
+    validateAgainstDirectionalTypes: (value) => {
         return DirectionMappings[value] ? true : false;
-    }
+    },
 
-    validateValueStructure(value) {
+    validateValueStructure: (value) => {
+        const checkIfPixelValue = (value) => {
+            const splittedPixel = value.split('px');
+            return ((splittedPixel.length > 0) && (splittedPixel[1] === ''));
+        };
 
         const splitValues = value.split(':');
         const directionValue = splitValues[0];
         const pixelValue = splitValues[1];
         const splitPixelValue = pixelValue.split(':');
 
-        if (typeof directionValue !== 'string') {
-            console.log(`Direction value : ${value}`);
-        }
-        if (splitPixelValue[1] !== 'px') {
+        if (!checkIfPixelValue(pixelValue)) {
+            console.log(`Cannot find a valid pixel value for ${pixelValue}`);
             return false;
         }
-    }
 
+        if (!this.Validator.validateAgainstDirectionalTypes(directionValue)) {
+            console.log(`Direction value : ${directionValue} is not a valid direction.`);
+            return false;
+        }
 
-    validateInput(values) {
+        return true;
+
+    },
+
+    validateInput: (values) => {
         if (values.length === 0) {
             return false;
         }
         let passedValidation = true;
         values.forEach(value => {
-            this.removeWhiteSpace(value);
-            if (!this.validateAgainstDirectionalTypes(value)) {
-                console.log(`Direction Type : ${value}`);
+            this.Validator.removeWhiteSpace(value);
+            if (!this.Validator.validateValueStructure(value)) {
                 passedValidation = false;
             }
         });
         return passedValidation;
     }
-
-}
+};
