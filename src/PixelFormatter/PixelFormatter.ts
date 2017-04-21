@@ -1,4 +1,5 @@
 import { DirectionMappings, Directions } from '../Constants/DirectionMappings';
+import { WeightedMappings, AdditionFormat, PixelValues } from '../Interfaces/Mappings';
 
 export const PixelFormatter = {
     getWeightsAndDirection: (values) => {
@@ -7,10 +8,10 @@ export const PixelFormatter = {
         });
     },
 
-    extractWeightedMappings: (value) => {
-        const directionalValues = value.trim().split(':');
-        const direction = directionalValues[0];
-        const pixelValue = directionalValues[1].split('px')[0].trim();
+    extractWeightedMappings: (value): WeightedMappings => {
+        const directionalValues: string[] = value.trim().split(':');
+        const direction: string = directionalValues[0];
+        const pixelValue: string = directionalValues[1].split('px')[0].trim();
 
         return ({
             isVertical: DirectionMappings[direction].isVertical,
@@ -19,41 +20,41 @@ export const PixelFormatter = {
         });
     },
 
-    getValuesInAdditionForm: (values) => {
-        const getValues = (isVertical) => {
+    getValuesInAdditionForm: (values): AdditionFormat => {
+        const getValues = (isVertical): string[] => {
             return values.filter(value => value.isVertical === isVertical);
         };
         return { verticalValues: getValues(true), horizontalValues: getValues(false) };
     },
 
-    performPixelAddition: (values) => {
+    performPixelAddition: (values): PixelValues => {
         const { verticalValues, horizontalValues } = values;
-        const performAddition = (input) => {
-            let pixelTotal = null;
+        const performAddition = (input: any[]): number => {
+            let pixelTotal: number = null;
             input.forEach(value => {
                 pixelTotal += (value.weight * value.pixelValue);
             });
             return pixelTotal;
         };
-        const verticalPixels = verticalValues.length > 0 ? performAddition(verticalValues) : null;
-        const horizontalPixels = horizontalValues.length > 0 ? performAddition(horizontalValues) : null;
+        const verticalPixels: number = verticalValues.length > 0 ? performAddition(verticalValues) : null;
+        const horizontalPixels: number = horizontalValues.length > 0 ? performAddition(horizontalValues) : null;
 
         return { verticalPixels: verticalPixels, horizontalPixels: horizontalPixels };
     },
 
-    reconstructDirectionalValues: (addedPixels) => {
-        const findCorrespondingDirection = (pixelValue, higherAndLowerValuesForPixels) => {
-            const direction = pixelValue >= 0 ? higherAndLowerValuesForPixels.lower : higherAndLowerValuesForPixels.higher;
-            return { [direction] : pixelValue ? Math.abs(pixelValue) : null };
+    reconstructDirectionalValues: (addedPixels): any => {
+        const findCorrespondingDirection = (pixelValue: number, higherAndLowerValuesForPixels) => {
+            const direction: string = pixelValue >= 0 ? higherAndLowerValuesForPixels.lower : higherAndLowerValuesForPixels.higher;
+            return { [direction]: pixelValue ? Math.abs(pixelValue) : null };
         };
 
-        const finalStyle = {};
-        const formStyleObject = (styles) => {
-            const keys = Object.keys(styles);
+        const finalStyle: any = {};
+        const formStyleObject = (styles): void => {
+            const keys: string[] = Object.keys(styles);
             finalStyle[keys[0]] = styles[keys[0]];
         };
-        const vertical = formStyleObject(findCorrespondingDirection(addedPixels.verticalPixels, { lower: 'bottom', higher: 'top' }));
-        const horizontal = formStyleObject(findCorrespondingDirection(addedPixels.horizontalPixels, { lower: 'left', higher: 'right' }));
+        formStyleObject(findCorrespondingDirection(addedPixels.verticalPixels, { lower: 'bottom', higher: 'top' }));
+        formStyleObject(findCorrespondingDirection(addedPixels.horizontalPixels, { lower: 'left', higher: 'right' }));
         return finalStyle;
     }
 };

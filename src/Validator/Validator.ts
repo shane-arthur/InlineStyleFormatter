@@ -3,7 +3,7 @@ import { DirectionMappings } from '../Constants/DirectionMappings';
 
 export const Validator = {
 
-    removeWhiteSpace: (value) => {
+    removeWhiteSpace: (value: string): string  => {
         return value.replace(/\s/g, '');
     },
 
@@ -11,22 +11,21 @@ export const Validator = {
         return DirectionMappings[value] ? true : false;
     },
 
-    throwValidationException(message) {
+    throwValidationException(message): void {
         console.log(message);
         throw new Error(message);
     },
 
-    validateValueStructure: (value) => {
-        const checkIfPixelValue = (value) => {
-            const splittedPixel = value.split('px');
-            return ((splittedPixel.length > 0) && (splittedPixel[1] === ''));
+    validateValueStructure: (value: string): void => {
+        const checkIfPixelValue = (value): boolean => {
+            const splittedPixel: string[] = value.split('px');
+            const pixelValue: number = this.Validator.removeWhiteSpace(splittedPixel[0]);
+            return ((splittedPixel.length > 0) && (splittedPixel[1] === '') && (!isNaN(pixelValue)));
         };
 
-        const splitValues = value.split(':');
-        const directionValue = splitValues[0];
-        const pixelValue = splitValues[1];
-        const splitPixelValue = pixelValue.split(':');
-
+        const splitValues: string[] = value.split(':');
+        const directionValue: string = splitValues[0];
+        const pixelValue: string = splitValues[1];
 
         if (!checkIfPixelValue(pixelValue)) {
             this.Validator.throwValidationException(`Cannot find a valid pixel value for ${pixelValue}.`);
@@ -37,13 +36,13 @@ export const Validator = {
         }
     },
 
-    checkIfNullEntry: (values) => {
+    checkIfNullEntry: (values) : void => {
         if (values.length === 0) {
             this.Validator.throwValidationException('You must pass some styles to perform and operation against.');
         }
     },
 
-    validateInput: (values) => {
+    validateInput: (values) : string[] => {
         this.Validator.checkIfNullEntry(values);
         values.forEach(value => {
             this.Validator.removeWhiteSpace(value);
