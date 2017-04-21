@@ -1,10 +1,16 @@
-import { DirectionMappings } from '../Constants/DirectionMappings';
+import { DirectionMappings, Directions } from '../Constants/DirectionMappings';
 
 export const PixelFormatter = {
+    getWeightsAndDirection: (values) => {
+        return values.map(value => {
+            return this.PixelFormatter.extractWeightedMappings(value);
+        });
+    },
+
     extractWeightedMappings: (value) => {
         const directionalValues = value.trim().split(':');
         const direction = directionalValues[0];
-        const pixelValue = directionalValues[1].split('px')[0];
+        const pixelValue = directionalValues[1].split('px')[0].trim();
 
         return ({
             isVertical: DirectionMappings[direction].isVertical,
@@ -13,37 +19,41 @@ export const PixelFormatter = {
         });
     },
 
-    getWeightsAndDirection: (values) => {
-        return values.map(value => {
-            return this.PixelFormatter.extractWeightedMappings(value);
-        });
-    },
-
     getValuesInAdditionForm: (values) => {
         const getValues = (isVertical) => {
             return values.filter(value => value.isVertical === isVertical);
         };
-
-        const verticalArray = getValues(true);
-        const horizontalArray = getValues(false);
-
-        return {verticalValues: verticalArray, horizontalValues: horizontalArray};
+        return { verticalValues: getValues(true), horizontalValues: getValues(false) };
     },
 
     performPixelAddition: (values) => {
         const { verticalValues, horizontalValues } = values;
-        const performAddition = (values) => {
-            values.reduce(value => {
-                return (value.weight * value.pixelValue);
-            })
-        }
+        const performAddition = (input) => {
+            let pixelTotal = null;
+            input.forEach(value => {
+                pixelTotal += (value.weight * value.pixelValue);
+            });
+            return pixelTotal;
+        };
+        const verticalPixels = verticalValues.length > 0 ? performAddition(verticalValues) : null;
+        const horizontalPixels = horizontalValues.length > 0 ? performAddition(horizontalValues) : null;
 
+        return { verticalPixels: verticalPixels, horizontalPixels: horizontalPixels };
+    },
 
-        const verticalPixels = performAddition(verticalValues);
-        const horizontalPixels = performAddition(horizontalValues);
+    reconstructDirectionalValues: (addedPixels) => {
+        const findCorrespondingDirection = (pixelValue, higherAndLowerValuesForPixels) => {
+            const direction = pixelValue >= 0 ? higherAndLowerValuesForPixels.lower : higherAndLowerValuesForPixels.higher;
+            return { [direction] : pixelValue ? Math.abs(pixelValue) : null };
+        };
 
-        console.log('Lil Bitch!');
-        console.log(verticalPixels, horizontalPixels);
-        
+        const finalStyle = {};
+        const formStyleObject = (styles) => {
+            const keys = Object.keys(styles);
+            finalStyle[keys[0]] = styles[keys[0]];
+        };
+        const vertical = formStyleObject(findCorrespondingDirection(addedPixels.verticalPixels, { lower: 'bottom', higher: 'top' }));
+        const horizontal = formStyleObject(findCorrespondingDirection(addedPixels.horizontalPixels, { lower: 'left', higher: 'right' }));
+        return finalStyle;
     }
 };

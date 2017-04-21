@@ -11,6 +11,11 @@ export const Validator = {
         return DirectionMappings[value] ? true : false;
     },
 
+    throwValidationException(message) {
+        console.log(message);
+        throw new Error(message);
+    },
+
     validateValueStructure: (value) => {
         const checkIfPixelValue = (value) => {
             const splittedPixel = value.split('px');
@@ -22,31 +27,28 @@ export const Validator = {
         const pixelValue = splitValues[1];
         const splitPixelValue = pixelValue.split(':');
 
+
         if (!checkIfPixelValue(pixelValue)) {
-            console.log(`Cannot find a valid pixel value for ${pixelValue}`);
-            return false;
+            this.Validator.throwValidationException(`Cannot find a valid pixel value for ${pixelValue}.`);
         }
 
         if (!this.Validator.validateAgainstDirectionalTypes(directionValue)) {
-            console.log(`Direction value : ${directionValue} is not a valid direction.`);
-            return false;
+            this.Validator.throwValidationException(`Direction value : ${directionValue} is not a valid direction.`);
         }
+    },
 
-        return true;
-
+    checkIfNullEntry: (values) => {
+        if (values.length === 0) {
+            this.Validator.throwValidationException('You must pass some styles to perform and operation against.');
+        }
     },
 
     validateInput: (values) => {
-        if (values.length === 0) {
-            return false;
-        }
-        let passedValidation = true;
+        this.Validator.checkIfNullEntry(values);
         values.forEach(value => {
             this.Validator.removeWhiteSpace(value);
-            if (!this.Validator.validateValueStructure(value)) {
-                passedValidation = false;
-            }
+            this.Validator.validateValueStructure(value);
         });
-        return passedValidation;
+        return values;
     }
 };

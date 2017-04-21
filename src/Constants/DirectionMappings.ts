@@ -18,3 +18,10 @@ export const DirectionMappings = {
         weight: -1
     }
 };
+
+export const Directions = {
+    LEFT: 'left',
+    RIGHT: 'right',
+    TOP: 'top',
+    BOTTOM: 'bottom'
+};

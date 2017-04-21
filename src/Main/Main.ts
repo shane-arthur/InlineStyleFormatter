@@ -4,29 +4,19 @@ import { DirectionMappings } from '../Constants/DirectionMappings';
 
 export const Formatter = {
 
-
-    getValuesInAdditionForm(values) {
-        return PixelFormatter.getValuesInAdditionForm(values);
-    },
-
-    validateInput: (styles) => {
-        return PixelFormatter.getWeightsAndDirection(styles);
-    },
-
-    validate: (input) => {
+    validateAndRemoveWhiteSpace: (input) => {
         return Validator.validateInput(input);
     },
 
-
     addPixels(...styles) {
-        let formattedStyles = this.performValidationAndFormatting(styles);
-        let left = null;
-        let right = null;
-        if (formattedStyles) {
-            const shot = this.getValuesInAdditionForm(formattedStyles);
+        try {
+            const performAddPixels = (values) => {
+                return PixelFormatter.reconstructDirectionalValues(PixelFormatter.performPixelAddition(PixelFormatter.getValuesInAdditionForm(PixelFormatter.getWeightsAndDirection(values))));
+            };
+            return performAddPixels(this.validateAndRemoveWhiteSpace(styles));
         }
-
-        return [left, right];
+        catch (error) {
+            return [`There was an error performing the addition of pixels : ${error}`];
+        }
     },
-
 };

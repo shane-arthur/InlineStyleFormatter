@@ -1,24 +1,21 @@
-/*import { Validator } from './Validator';
+import { Validator } from './Validator';
 
 describe('Formatter', () => {
-    let result: boolean;
     let sut = Validator;
 
-    beforeEach(() => {
-        result = null;
-    });
-
-    it('should correctly return true when passing validation', () => {
-        result = sut.validateInput(['left: 10px', 'left:20px']);
-        expect(result).toBeTruthy();
-    });
-
     it('should reject if directional value isnt one of the four acceptable types', () => {
-        result = sut.validateInput(['leftd: 10px', 'left:20px']);
-        expect(result).toBeFalsy();
+        expect(() => {
+            sut.validateInput(['leftd: 10px', 'left:20px']);
+        }).toThrowError('Direction value : leftd is not a valid direction.');
     });
-      it('should reject if value is not a pixel value', () => {
-        result = sut.validateInput(['left: 10px', 'left:20pdx']);
-        expect(result).toBeFalsy();
+    it('should reject one value is not a proper pixel value', () => {
+        expect(() => {
+            sut.validateInput(['left: 10px', 'left:20pdx']);
+        }).toThrowError('Cannot find a valid pixel value for 20pdx.');
     });
-}); */
+    it('should reject if there are no values to validate against', () => {
+        expect(() => {
+            sut.validateInput([]);
+        }).toThrowError('You must pass some styles to perform and operation against.');
+    });
+});
