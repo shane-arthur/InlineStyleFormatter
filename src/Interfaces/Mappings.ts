@@ -6,8 +6,8 @@ export interface WeightedMappings {
 };
 
 export interface AdditionFormat {
-    verticalValues: string[];
-    horizontalValues: string[];
+    verticalValues: WeightedMappings[];
+    horizontalValues: WeightedMappings[];
 };
 
 export interface PixelValues {

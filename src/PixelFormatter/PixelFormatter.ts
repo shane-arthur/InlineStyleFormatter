@@ -21,7 +21,7 @@ export const PixelFormatter = {
     },
 
     getValuesInAdditionForm: (values): AdditionFormat => {
-        const getValues = (isVertical): string[] => {
+        const getValues = (isVertical): WeightedMappings[] => {
             return values.filter(value => value.isVertical === isVertical);
         };
         return { verticalValues: getValues(true), horizontalValues: getValues(false) };
@@ -42,19 +42,46 @@ export const PixelFormatter = {
         return { verticalPixels: verticalPixels, horizontalPixels: horizontalPixels };
     },
 
-    reconstructDirectionalValues: (addedPixels): any => {
-        const findCorrespondingDirection = (pixelValue: number, higherAndLowerValuesForPixels) => {
-            const direction: string = pixelValue >= 0 ? higherAndLowerValuesForPixels.lower : higherAndLowerValuesForPixels.higher;
-            return { [direction]: pixelValue ? Math.abs(pixelValue) : null };
+    performPixelMultiplication: (values: AdditionFormat, factor): any => {
+        const getPixelValuesInCorrectFormat = (key: string) => {
+            return values[key].map(value => {
+                return ((value.weight * Number(value.pixelValue)) * factor);
+            });
         };
 
+        const pixelValue = { verticalPixels: null, horizontalPixels: null };
+
+        pixelValue.verticalPixels = getPixelValuesInCorrectFormat('verticalValues');
+        pixelValue.horizontalPixels = getPixelValuesInCorrectFormat('horizontalValues');
+        return pixelValue;
+    },
+
+    findCorrespondingDirection: (pixelValue: number, higherAndLowerValuesForPixels) => {
+        const direction: string = pixelValue >= 0 ? higherAndLowerValuesForPixels.lower : higherAndLowerValuesForPixels.higher;
+        return { [direction]: pixelValue ? Math.abs(pixelValue) : null };
+    },
+
+    reconstructDirectionalValues: (addedPixels): any => {
         const finalStyle: any = {};
-        const formStyleObject = (styles): void => {
+        const formStyleObject = (styles: any): void => {
             const keys: string[] = Object.keys(styles);
-            finalStyle[keys[0]] = styles[keys[0]];
+            if (styles[keys[0]]) {
+                finalStyle[keys[0]] = `${styles[keys[0]]}px`;
+            }
         };
-        formStyleObject(findCorrespondingDirection(addedPixels.verticalPixels, { lower: 'bottom', higher: 'top' }));
-        formStyleObject(findCorrespondingDirection(addedPixels.horizontalPixels, { lower: 'left', higher: 'right' }));
+
+        const performStyling = (pixelValues, higherLowerValueObject) => {
+            if (typeof pixelValues !== 'number' && pixelValues) {
+                pixelValues.forEach(pixelValue => {
+                    formStyleObject(this.PixelFormatter.findCorrespondingDirection(pixelValue, higherLowerValueObject));
+                });
+            }
+            else {
+                formStyleObject(this.PixelFormatter.findCorrespondingDirection(pixelValues, higherLowerValueObject));
+            }
+        };
+        performStyling(addedPixels.verticalPixels, { lower: 'bottom', higher: 'top' });
+        performStyling(addedPixels.horizontalPixels, { lower: 'left', higher: 'right' });
         return finalStyle;
     }
 };

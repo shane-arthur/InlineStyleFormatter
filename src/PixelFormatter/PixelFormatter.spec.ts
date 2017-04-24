@@ -26,11 +26,9 @@ describe('Formatter', () => {
     });
     it('should correctly perform to addition of pixels 2', () => {
         result = sut.reconstructDirectionalValues(result);
-        expect(result.bottom).toBeNull();
-        expect(result.right).toBe(30);
+        expect(result.right).toBe('30px');
     });
     // Test untested conditions in this section
-
     it('should correctly perform to addition of pixels with horizontalValues null', () => {
         const testSet = {
             verticalValues: [{ isVertical: true, weight: -1, pixelValue: '10' },
