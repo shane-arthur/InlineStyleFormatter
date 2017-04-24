@@ -11,8 +11,8 @@ describe('Formatter', () => {
     it('Test the end to end addition of pixels', () => {
         const newStyles = sut.addPixels('left: 10px', 'left: 20px', 'top: 30px', 'bottom: 40px');
         expect(Object.keys(newStyles).length).toBe(2);
-        expect(newStyles['top']).toBe(`10px`);
-        expect(newStyles['right']).toBe(`30px`);
+        expect(newStyles['bottom']).toBe(`10px`);
+        expect(newStyles['left']).toBe(`30px`);
     });
 
     it('Simulate an error being thrown and make sure it is handeled appropriately', () => {
@@ -21,10 +21,14 @@ describe('Formatter', () => {
     });
 
     it('should be able to shrink pixels by a constant factor', () => {
-        const newStyles = sut.shrinkPixels(5, 'left: 10px', 'right: 100px', 'bottom: 100px');
-        console.log(newStyles);
-        console.log(Object.keys(newStyles);
-        expect(newStyles.bottom).toBe('20px');
+        const newStyles = sut.shrinkPixels(5, 'left: 10px', 'right: 100px', 'bottom: 200px');
+        expect(newStyles.bottom).toBe('40px');
         expect(newStyles.left).toBe('2px');
+    });
+
+    it('should be able to multiply pixels by a constant factor', () => {
+        const newStyles = sut.growPixels(5, 'left: 10px', 'right: 10px', 'bottom: 40px');
+        expect(newStyles.bottom).toBe('200px');
+        expect(newStyles.right).toBe('50px');
     });
 });

@@ -1,4 +1,3 @@
-
 export interface WeightedMappings {
     isVertical: boolean;
     weight: number;

@@ -24,9 +24,9 @@ describe('Formatter', () => {
         expect(result.verticalPixels).toBeNull();
         expect(result.horizontalPixels).toBe(-30);
     });
-    it('should correctly perform to addition of pixels 2', () => {
+    it('should successfully reconstruct direction values', () => {
         result = sut.reconstructDirectionalValues(result);
-        expect(result.right).toBe('30px');
+        expect(result.left).toBe('30px');
     });
     // Test untested conditions in this section
     it('should correctly perform to addition of pixels with horizontalValues null', () => {

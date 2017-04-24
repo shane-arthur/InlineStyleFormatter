@@ -1,5 +1,5 @@
 import { DirectionMappings, Directions } from '../Constants/DirectionMappings';
-import { WeightedMappings, AdditionFormat, PixelValues } from '../Interfaces/Mappings';
+import { WeightedMappings, AdditionFormat, PixelValues } from '../Interfaces/Mappings.config';
 
 export const PixelFormatter = {
     getWeightsAndDirection: (values) => {
@@ -57,7 +57,7 @@ export const PixelFormatter = {
     },
 
     findCorrespondingDirection: (pixelValue: number, higherAndLowerValuesForPixels) => {
-        const direction: string = pixelValue >= 0 ? higherAndLowerValuesForPixels.lower : higherAndLowerValuesForPixels.higher;
+        const direction: string = pixelValue <= 0 ? higherAndLowerValuesForPixels.lower : higherAndLowerValuesForPixels.higher;
         return { [direction]: pixelValue ? Math.abs(pixelValue) : null };
     },
 
