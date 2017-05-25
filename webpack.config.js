@@ -1,7 +1,7 @@
 
 
 module.exports = {
-    entry: './src/Utils/Formatter.ts',
+    entry: './src/PixelFormatter/PixelFormatter.ts',
     output: {
         filename: './dist/bundle.js'
     },
