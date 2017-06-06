@@ -1,4 +1,4 @@
-# H1 inline-style-formatter
+# inline-style-formatter
 
 - Inline Style formatter
 
